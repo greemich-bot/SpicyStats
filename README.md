@@ -17,4 +17,12 @@ def send_request(socket, payload):
 
     All available metrics will be returned if "requested" is omitted. Returned metrics can be specified (ex. "requested": ["min", "average"] will only return the minimum and average). More examples of usage are avilable in Sample.py. 
 
+    The microservice can also calculate the heart rate zone of a workout if provided with a user's age and average heart rate using:
+
+    outgoing = {
+        "age": 30,  
+        "heart_rate": 130,
+        "requested": ["heart_rate_zone"]
+    }
+
 3. UML Diagram

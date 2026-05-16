@@ -29,7 +29,7 @@ def main():
     # Test Case 2: Request ONLY the average
     test_2 = {
         "numbers": [5, 15, 25, 35, 45],
-        "requested": ["average"]
+        "requested": ["average", "heart_rate_zone"]
     }
     send_request(socket, test_2)
 
@@ -46,6 +46,22 @@ def main():
         "requested": ["min"]
     }
     send_request(socket, test_4)
+
+    # Test Case 5: only heart rate zone calculation
+    test_5 = {
+        "age": 30,
+        "heart_rate": 160
+    }
+    send_request(socket, test_5)
+
+    # Test Case 6: Combined request for heart rate zone and calculations of the numbers
+    test_6 = {
+        "age": 30,  
+        "heart_rate": 130,
+        "numbers": [1, 2, 3, 4, 5],
+        "requested": ["average", "heart_rate_zone"]
+    }
+    send_request(socket, test_6)
 
 if __name__ == "__main__":
     main()
