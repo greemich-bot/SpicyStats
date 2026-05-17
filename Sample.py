@@ -63,5 +63,46 @@ def main():
     }
     send_request(socket, test_6)
 
+    # Test Case 7: Track created task event
+    test_7 = {
+        "event": {
+            "app_name": "Task Manager",
+            "user_id": "user_123",
+            "event_type": "task_created",
+            "data_value": 1
+        }
+    }
+    send_request(socket, test_7)
+
+    # Test Case 8: Track completed task event
+    test_8 = {
+        "event": {
+            "app_name": "Task Manager",
+            "user_id": "user_123",
+            "event_type": "task_completed",
+            "data_value": 1
+        }
+    }
+    send_request(socket, test_8)
+
+    # Test Case 9: Track deleted task event
+    test_9 = {
+        "event": {
+            "app_name": "Task Manager",
+            "user_id": "user_123",
+            "event_type": "task_deleted",
+            "data_value": 1
+        }
+    }
+    send_request(socket, test_9)
+
+    # Test Case 10: Event summary request
+    test_10 = {
+        "app_name": "Task Manager",
+        "user_id": "user_123",
+        "requested": ["event_summary"]
+    }
+    send_request(socket, test_10)
+
 if __name__ == "__main__":
     main()

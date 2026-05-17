@@ -28,7 +28,7 @@ def main():
             user_id = data.get("user_id")
 
             # determine which features to calculate based on 'requested' field
-            all_features = ["total", "min", "max", "average", "heart_rate_zone", "event_summary"]
+            all_features = ["total", "min", "max", "average", "heart_rate_zone"]
             requested = data.get("requested", all_features)  # default to all features if not specified
             
             # prepare response dictionary

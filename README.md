@@ -1,7 +1,15 @@
 
-1. The microservice receives sample data in a json format and returns the requested statistics.
+1. The microservice receives sample data in a json format using ZeroMQ with a Req/Rep communication and returns the requested statistics.
 
 2. Data should be sent and recieved with:
+
+import zmq
+import json
+
+context = zmq.Context()
+socket = context.socket(zmq.REQ)
+
+socket.connect("tcp://localhost:5555")
 
 def send_request(socket, payload):
     socket.send_string(json.dumps(payload))
@@ -24,5 +32,24 @@ def send_request(socket, payload):
         "heart_rate": 130,
         "requested": ["heart_rate_zone"]
     }
+
+    The user can also have the microservice track events and store data to then later get a summary from that stored data using:
+
+    outgoing = {
+        "event": {
+            "app_name": "generic_app",
+            "user_id": "user_123",
+            "event_type": "button_click",
+            "data_value": 3
+        }
+    }
+    socket.send_string(json.dumps(outgoing))
+
+    outgoing = {
+        "app_name": "generic_app",
+        "user_id": "user_123",
+        "requested": ["event_summary"]
+    }
+    socket.send_string(json.dumps(outgoing))
 
 3. UML Diagram
