@@ -1,6 +1,8 @@
 import json
 import zmq
 import HrZone
+from EventTracking import handle_event_tracking
+from SummaryStats import summary_stats, event_summary
 
 
 def main():
@@ -21,15 +23,28 @@ def main():
             numbers = data.get("numbers")
             age = data.get("age")
             heart_rate = data.get("heart_rate")
+            event = data.get("event")
+            app_name = data.get("app_name")
+            user_id = data.get("user_id")
 
             # determine which features to calculate based on 'requested' field
-            all_features = ["min", "max", "average", "heart_rate_zone"]
+            all_features = ["total", "min", "max", "average", "heart_rate_zone", "event_summary"]
             requested = data.get("requested", all_features)  # default to all features if not specified
             
             # prepare response dictionary
             response = {}
 
-            # calculate heart rate zone if requested
+            # Process event tracking (User story 1)
+            response.update(handle_event_tracking(event))
+
+            # Return event summary if requested
+            if "event_summary" in requested:
+                if app_name is not None and user_id is not None:
+                    response.update(event_summary(app_name, user_id))
+                else:
+                    response["error"] = "Event summary requires app_name and user_id."
+
+            # calculate heart rate zone if requested (User story 2)
             if "heart_rate_zone" in requested:
                 # calculate heart rate zone if age and heart_rate are provided
                 if age is not None and heart_rate is not None:
@@ -38,24 +53,9 @@ def main():
                     except Exception as e:
                         response["error"] = f"Error calculating heart rate zone: {str(e)}"
 
-            # calculate min, max, average if requested and numbers array is provided
-            if any(feature in requested for feature in ["min", "max", "average"]):
+            # Process summary statistics (User story 3)
+            response.update(summary_stats(numbers, requested))
 
-                if numbers is not None and isinstance(numbers, list) and len(numbers) > 0:
-                
-                    try:
-                        all_metrics = {
-                        "min": min(numbers),
-                        "max": max(numbers),
-                        "average": sum(numbers) / len(numbers)
-                        }
-                    # determine which metrics to include in the response
-                        requested_metrics = data.get("requested", ["min", "max", "average"])
-                        response.update({key: all_metrics[key] for key in requested_metrics if key in all_metrics})
-                
-                    except Exception as e:
-                        response["error"] = f"Error calculating metrics: {str(e)}"
-            
             if not response:
                 response["error"] = "No valid data provided. Please include 'numbers' and/or 'age' and 'heart_rate'."
  
@@ -69,4 +69,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
