@@ -53,3 +53,4 @@ def send_request(socket, payload):
     socket.send_string(json.dumps(outgoing))
 
 3. UML Diagram
+![UML Sequence Diagram](UML_sequence_diagram.png)
