@@ -1,9 +1,9 @@
 {
     "Task Manager": {
         "user_123": {
-            "task_created": 3,
-            "task_completed": 3,
-            "task_deleted": 3
+            "task_created": 5,
+            "task_completed": 5,
+            "task_deleted": 5
         }
     }
 }

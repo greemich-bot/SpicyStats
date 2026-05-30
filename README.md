@@ -1,21 +1,26 @@
 
-1. The microservice receives sample data in a json format using ZeroMQ with a Req/Rep communication and returns the requested statistics.
+This is a statistics microservice, which means that it is a stand alone component which could be utilized by a variety of different programs for a statistical analysis. Because it functions independently of the requesting programs, microservices are by nature very modular--meaning that it could easily be integrated into a larger piece of software. The microservice works by receiving a request in JSON format. The request would contain a set of numbers and some information about what the microservice should do with the information. The microservice then sends the appropriate information back to the requesting program. 
 
-2. Data should be sent and recieved with:
+1. The microservice receives sample data in a json format using ZeroMQ with a Req/Rep communication pattern and returns the requested statistics.
 
-import zmq
-import json
+2. Connect to the microservice using:
 
-context = zmq.Context()
-socket = context.socket(zmq.REQ)
+    import zmq
+    import json
 
-socket.connect("tcp://localhost:5555")
+    context = zmq.Context()
+    socket = context.socket(zmq.REQ)
 
-def send_request(socket, payload):
-    socket.send_string(json.dumps(payload))
-    reply = socket.recv_string()
+    socket.connect("tcp://localhost:5555")
 
-    In the format:
+3. Send and recieve information with:
+
+    def send_request(socket, payload):
+        socket.send_string(json.dumps(payload))
+        reply = socket.recv_string()
+
+        
+# send the information in the format:
 
     outgoing = {
         "numbers": [100, 2, 55, 89],
@@ -23,9 +28,12 @@ def send_request(socket, payload):
     }
     send_request(socket, outgoing)
 
-    All available metrics will be returned if "requested" is omitted. Returned metrics can be specified (ex. "requested": ["min", "average"] will only return the minimum and average). More examples of usage are avilable in Sample.py. 
 
-    The microservice can also calculate the heart rate zone of a workout if provided with a user's age and average heart rate using:
+
+
+4. All available metrics will be returned if "requested" is omitted. Returned metrics can be specified (ex. "requested": ["min", "average"] will only return the minimum and average). More examples of usage are avilable in Sample.py. 
+
+5. The microservice can also calculate the heart rate zone of a workout if provided with a user's age and average heart rate using:
 
     outgoing = {
         "age": 30,  
@@ -33,7 +41,7 @@ def send_request(socket, payload):
         "requested": ["heart_rate_zone"]
     }
 
-    The user can also have the microservice track events and store data to then later get a summary from that stored data using:
+ 6. The user can also have the microservice track events and store data to then later get a summary from that stored data using:
 
     outgoing = {
         "event": {
@@ -52,5 +60,5 @@ def send_request(socket, payload):
     }
     socket.send_string(json.dumps(outgoing))
 
-3. UML Diagram
+7. UML Diagram
 ![UML Sequence Diagram](UML_sequence_diagram.png)
