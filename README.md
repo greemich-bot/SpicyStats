@@ -20,7 +20,7 @@ This is a statistics microservice, which means that it is a stand alone componen
         reply = socket.recv_string()
 
         
-# send the information in the format:
+ Send the information in the format:
 
     outgoing = {
         "numbers": [100, 2, 55, 89],
