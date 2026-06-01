@@ -59,7 +59,7 @@ def setup_socket():
     # Setup 
     context = zmq.Context()
     socket = context.socket(zmq.REP)
-    socket.bind("tcp://*5555")
+    socket.bind("tcp://*:5555")
     print("Microservice is listening on port 5555...")
     return socket
 
@@ -82,7 +82,7 @@ def main():
     socket = setup_socket()
 
     while True:
-        handle_request()
+        handle_request(socket)
 
 if __name__ == "__main__":
     main()
