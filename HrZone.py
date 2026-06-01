@@ -1,7 +1,17 @@
 
 
 def hrZone(age, heart_rate):
+    if not isinstance(age, (int, float)) or age <= 0:
+        raise ValueError("age must be a positive number")
+    
+    if not isinstance(heart_rate, (int, float)) or heart_rate <= 0:
+        raise ValueError("heart rate must be a positive numbers")
+
     max_heart_rate = 208 - (0.7 * age)
+
+    if max_heart_rate <= 0:
+        raise ValueError("age produces an invalid maximum heart rate")
+
     percentage = heart_rate / max_heart_rate
     print(percentage)
     if percentage < 0.6:
